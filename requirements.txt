@@ -1,0 +1,5 @@
+numpy
+ipywidgets
+bqplot
+matplotlib
+voila

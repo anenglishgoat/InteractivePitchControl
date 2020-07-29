@@ -1,5 +1,6 @@
+voila
+voila-material
 numpy
 ipywidgets
 bqplot
 matplotlib
-voila

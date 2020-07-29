@@ -1,1 +1,1 @@
-web: voila —-port=$PORT —-no-browser notebooks/InteractivePitchControl.ipynb
+web: voila —-port=$PORT —-no-browser InteractivePitchControl.ipynb

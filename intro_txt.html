@@ -1,0 +1,43 @@
+<h2 id="interactive-tactics-board-with-pitch-control">Interactive tactics board with pitch control</h2>
+<details>
+<summary><b>About &amp; how to use this app</b></summary>
+
+The idea behind this app is to allow the user to explore situations in football through the lens of pitch control models. I should say first off that people much smarter than me were responsible for developing these models &amp; putting in the hard yards of thinking carefully about what pitch control is, why it matters, and how it&#39;s useful. You should read the papers of <a href="http://www.sloansportsconference.com/wp-content/uploads/2018/02/2002.pdf">Spearman</a> and <a href="http://www.sloansportsconference.com/wp-content/uploads/2018/03/1003.pdf">Fernandez &amp; Bornn</a> for the details.
+<details>
+<summary><b>Pitch control</b></summary>
+I&#39;ll try to summarise, briefly &amp; intuitively, what pitch control is and how we can add layers of context to the models to make them more useful -- this should give you a better idea of what the buttons below do. If you can&#39;t be bothered to read my fumbling attempts to explain this (or even if you can), you&#39;re probably better off watching <a href="https://www.youtube.com/watch?v=X9PrwPyolyU">this brilliant presentation</a> by Will Spearman.<br><br>
+Imagine we&#39;re in the situation on the interactive plot below. The red team has the ball about half way into the opposition&#39;s half and they&#39;re in a pretty advanced shape. The blue team are defending relatively deep and seem to be dealing pretty well with most of the attacking threat the red team is posing. But how do we quantify that? Well, there are really three aspects to the threat posed by the red team: which of their players are in enough space to receive the ball; whether or not the ball carrier can get the ball to them; and how likely the team is to score if it gets there.<br><br>
+Let&#39;s start with the first point. How much space is enough space to receive the ball? It depends on how quickly you&#39;re moving, how closely marked you are, how quickly your markers are moving and where the ball is. We say that you&#39;re in control of a point on the pitch if you can reach it before an opposition player and have enough time to control the ball. Of course, we&#39;re not in a perfect world where we know exactly whether a player can reach a point before somebody else before it actually happens, so there&#39;s some level of uncertainty in our predictions. This is what the different background colours represent on the field -- dark reds are points that we&#39;re very sure a red player can get to first, dark blues are points we&#39;re very sure they can&#39;t get to first, and lighter shades are regions we&#39;re not very sure about.<br><br>
+The actual computation of these levels of control can be done in a few different ways and with a few different underlying assumptions -- see the Spearman &amp; Fernandez papers above for details. These are what the &#39;Pitch control model&#39; options below correspond to. Despite the differences in methodology, they&#39;re all trying to quantify the probability that a player from either team can control a pass played to a given point on the pitch. That&#39;s it. I should mention that the &#39;Modified Fernandez&#39; model is almost identical to the Fernandez model, but the control of a player over a location is replaced by their proportion of the total &#39;influence&#39; (as defined in the Fernandez paper) at that location.<br><br>
+You may notice that this doesn&#39;t really account for whether a pass can or will realistically be played to a given location.<br><br>
+This is where the &#39;transition&#39; layer comes in. This uses a simple model for where the pass is actually likely to go next. It basically assumes that players are more likely to be able to control shorter passes, and that players will favour passes to players in space. Turning on this option will show you a different pitch control surface that takes into account this pass selection aspect -- it tries to answer the question, what&#39;s the probability that I would actually control the ball at this point if a pass was played now? This basically has the effect of downweighting pitch control in hard-to-reach areas of the pitch.<br><br>
+The final layer, &#39;scoring&#39;, tries to deal with the question of how <em>useful</em> this accessible pitch control is. Turning on this option will value more dangerous areas of the pitch more highly. The valuation of areas of the pitch is done using Karun Singh&#39;s <a href="https://karun.in/blog/expected-threat.html">expected threat</a>. Essentially, this value surface tries to quanitfy the probability that a goal will be scored within the current possession if the team is in control of the ball at a given location. Combining this with a pitch control model should highlight dangerous but plausible passing options. It&#39;s no good hoofing the ball into the six-yard box if you have no control over it, but passing backwards is also probably not the best option (though it might be if you don&#39;t have much control further up the field).
+</details>
+
+<details>
+<summary><b>How to use</b></summary>
+
+The players (dots with coloured outlines) can be moved by clicking and dragging. Their velocities can be adjusted by clicking and dragging the arrowheads. The ball (dot with black outline) can also be moved by clicking and dragging. When you release the mouse, the pitch control surface will update. There is also an option to compute the proportion of the pitch controlled by the red team. <em>Note that this only really makes sense when both the scoring and transition layers are switched off</em>.<br><br>
+If you haven&#39;t already, have a look at the section above for an explanation of what the various options correspond to.
+</details>
+
+<details>
+<summary><b>Acknowledgements &amp; resources</b></summary>
+
+The two papers:
+<ul>
+<li>Spearman (Beyond Expected Goals, Sloan Sports Conference, 2018).</li>
+<li>Fernandez &amp; Bornn (Wide Open Spaces: A statistical technique for measuring space creation in professional soccer, 2018).</li></ul>
+
+<a href="https://www.youtube.com/watch?v=X9PrwPyolyU">Will Spearman&#39;s talk for Friends of Tracking</a><br><br>
+<a href="https://github.com/Friends-of-Tracking-Data-FoTD/LaurieOnTracking/blob/master/Metrica_PitchControl.py">Laurie Shaw&#39;s implementation of the Spearman model, on which my initial code was based</a><br><br>
+<a href="https://karun.in/blog/expected-threat.html">Karun Singh&#39;s xT blog</a><br><br>
+<a href="https://github.com/metrica-sports/sample-data">Free tracking data from Metrica Sports</a><br><br>
+<a href="https://t.co/xBi3UJcn6Y?amp=1">Some PyTorch + CUDA code for computing Fernandez &amp; Modified Fernandez pitch control quickly</a><br><br>
+<a href="https://github.com/bqplot/bqplot">bqplot</a>, which I used to make the interactive visualisation.<br><br>
+Sam, owner of <a href="https://twitter.com/utdarena">UtdArena</a>, who gave me the idea for this. He&#39;s hoping to make this his full-time job, so support him if you can!<br><br>
+All of the code for computing pitch control and the interactive visualisations is available <a href="https://github.com/anenglishgoat/InteractivePitchControl">here</a>.<br><br>
+I converted the .ipynb in the above repo to a standalone web app using <a href="https://github.com/voila-dashboards/voila">Voilà</a>.
+</details>
+
+<p></details></p>

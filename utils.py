@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt2
 from torch import sqrt,norm,sum,cat,sigmoid,exp,tensor
 from torch.nn.functional import softplus
 from scipy.special import expit
+import numpy as np
 
 def get_contours(Z, x, y, n_contour=10):
     levels = np.linspace(0, np.max(Z), n_contour)

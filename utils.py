@@ -30,6 +30,8 @@ def get_pitch_control(home_pos,
                       target_position,
                       x_grid,
                       y_grid,
+                      ti,
+                      wi,
                       xT_values,
                       transition,
                       value):

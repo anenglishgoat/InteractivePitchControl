@@ -1,0 +1,7 @@
+setup.py
+IPCutils/__init__.py
+IPCutils.egg-info/PKG-INFO
+IPCutils.egg-info/SOURCES.txt
+IPCutils.egg-info/dependency_links.txt
+IPCutils.egg-info/not-zip-safe
+IPCutils.egg-info/top_level.txt
